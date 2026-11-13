@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+// Pastikan 'nama_project_anda' sesuai dengan bagian 'name:' di pubspec.yaml
 import 'screens/onboarding_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ),
+  );
+  runApp(const StudentTaskManagerApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class StudentTaskManagerApp extends StatelessWidget {
+  const StudentTaskManagerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Student Task Manager',
       debugShowCheckedModeBanner: false,
+      title: 'Student Task Manager',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6B1325),
-        ),
+        fontFamily: 'Roboto',
       ),
+      // Mengarahkan tampilan pertama ke file onboarding_screen.dart
       home: const OnboardingScreen(),
     );
   }
