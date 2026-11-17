@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// import 'package:student_task_manager/screens/jadwal.dart';
+// import 'package:student_task_manager/screens/onboarding_screen.dart';
+
 // Pastikan 'nama_project_anda' sesuai dengan bagian 'name:' di pubspec.yaml
 import 'screens/onboarding_screen.dart';
+// import 'screens/jadwal.dart';
+
+// import 'screens/jadwal.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,10 +28,7 @@ class StudentTaskManagerApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Student Task Manager',
-      theme: ThemeData(
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-      ),
+      theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
       // Mengarahkan tampilan pertama ke file onboarding_screen.dart
       home: const OnboardingScreen(),
     );
