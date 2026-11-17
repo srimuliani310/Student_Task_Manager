@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'tambah_jadwal.dart';
+import 'tambah_tugas.dart';
 
 class JadwalPage extends StatefulWidget {
   const JadwalPage({super.key});
@@ -165,12 +166,18 @@ class _JadwalPageState extends State<JadwalPage> {
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Tambah tugas untuk ${jadwal['matkul']}'),
+              onPressed: () async {
+                final hasil = await Navigator.push<Map<String, String>>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        TambahTugasPage(namaMatkul: jadwal['matkul']),
                   ),
                 );
+
+                if (hasil != null) {
+                  print(hasil);
+                }
               },
               icon: const Icon(Icons.add_task),
               label: const Text('Tambah Tugas'),
