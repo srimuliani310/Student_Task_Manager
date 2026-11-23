@@ -1,0 +1,86 @@
+
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import '../models/task.dart';
+
+class DatabaseHelper {
+  static final DatabaseHelper instance = DatabaseHelper._init();
+
+  static Database? _database;
+
+  DatabaseHelper._init();
+
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+
+    _database = await _initDB('student_tasks.db');
+    return _database!;
+  }
+
+  // Membuat database
+  Future<Database> _initDB(String filePath) async {
+    final dbPath = await getDatabasesPath();
+    final pathDB = join(dbPath, filePath);
+
+    return await openDatabase(
+      pathDB,
+      version: 1,
+      onCreate: _createDB,
+    );
+  }
+
+  // Membuat tabel tasks
+  Future<void> _createDB(Database db, int version) async {
+    await db.execute('''
+      CREATE TABLE tasks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        deadline TEXT NOT NULL,
+        isCompleted INTEGER NOT NULL DEFAULT 0
+      )
+    ''');
+  }
+
+  // Menambahkan tugas
+  Future<int> insertTask(Task task) async {
+    final db = await instance.database;
+
+    return await db.insert(
+      'tasks',
+      task.toMap(),
+    );
+  }
+
+  // Mengambil seluruh data tugas
+  Future<List<Task>> getTasks() async {
+    final db = await instance.database;
+
+    final result = await db.query('tasks');
+
+    return result.map((map) => Task.fromMap(map)).toList();
+  }
+
+  // Mengubah data tugas
+  Future<int> updateTask(Task task) async {
+    final db = await instance.database;
+
+    return await db.update(
+      'tasks',
+      task.toMap(),
+      where: 'id = ?',
+      whereArgs: [task.id],
+    );
+  }
+
+  // Menghapus tugas
+  Future<int> deleteTask(int id) async {
+    final db = await instance.database;
+
+    return await db.delete(
+      'tasks',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+}
