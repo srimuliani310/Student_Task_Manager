@@ -1,6 +1,11 @@
+import '../database/database_helper.dart';
+import '../models/task.dart';
+
 import 'package:flutter/material.dart';
 
 import 'jadwal.dart';
+import 'profil.dart';
+import 'schedule.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,13 +17,39 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  // Data default dalam keadaan nol/kosong semua
+  // Data dashboard
   final int totalJadwal = 0;
-  final int totalTugas = 0;
-  final int tugasBelum = 0;
-  final int tugasSelesai = 0;
-  final String? deadlineTerdekat = null;
+
+  int totalTugas = 0;
+  int tugasBelum = 0;
+  int tugasSelesai = 0;
+
+  String? deadlineTerdekat;
+
   final List<Map<String, String>> aktivitasHariIni = [];
+
+  List<Task> daftarTugas = [];
+  @override
+  void initState() {
+    super.initState();
+    muatDataTugas();
+  }
+
+  Future<void> muatDataTugas() async {
+    final data = await DatabaseHelper.instance.getTasks();
+
+    if (!mounted) return;
+
+    setState(() {
+      daftarTugas = data;
+
+      totalTugas = data.length;
+
+      tugasSelesai = data.where((task) => task.isCompleted == 1).length;
+
+      tugasBelum = data.where((task) => task.isCompleted == 0).length;
+    });
+  }
 
   // Palet warna sesuai desain
   static const Color primaryMaroon = Color(0xFF7D1128);
@@ -292,6 +323,46 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
+                  const SizedBox(height: 24),
+
+                  const Text(
+                    'Daftar Tugas',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.black87,
+                    ),
+                  ),
+
+                  const SizedBox(height: 14),
+
+                  if (daftarTugas.isEmpty)
+                    const Center(child: Text('Belum ada tugas'))
+                  else
+                    ...daftarTugas.map((task) {
+                      return Card(
+                        color: Colors.white,
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.assignment_outlined,
+                            color: primaryMaroon,
+                          ),
+                          title: Text(
+                            task.title,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            'Deadline: ${task.deadline}\n${task.description}',
+                          ),
+                          trailing: Icon(
+                            task.isCompleted == 1
+                                ? Icons.check_circle
+                                : Icons.pending_actions,
+                            color: task.isCompleted == 1 ? iconGreen : iconRed,
+                          ),
+                        ),
+                      );
+                    }),
                 ],
               ),
             ),
@@ -303,7 +374,6 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: const BoxDecoration(
           color: Colors.white,
           border: Border(top: BorderSide(color: Colors.black12, width: 0.8)),
-          
         ),
         child: BottomNavigationBar(
           currentIndex: _selectedIndex,
@@ -312,6 +382,16 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const JadwalPage()),
+              );
+            } else if (index == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SchedulePage()),
+              );
+            } else if (index == 3) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilPage()),
               );
             } else {
               setState(() {

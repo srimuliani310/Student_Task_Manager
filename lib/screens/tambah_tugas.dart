@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../database/database_helper.dart';
+import '../models/task.dart';
+
 class TambahTugasPage extends StatefulWidget {
   final String? namaMatkul;
 
@@ -69,7 +72,7 @@ class _TambahTugasPageState extends State<TambahTugasPage> {
     }
   }
 
-  void simpanTugas() {
+  Future<void> simpanTugas() async {
     if (namaController.text.trim().isEmpty ||
         matkulDipilih == null ||
         deadline == null) {
@@ -81,16 +84,21 @@ class _TambahTugasPageState extends State<TambahTugasPage> {
       return;
     }
 
-    final dataTugas = <String, String>{
-      'nama': namaController.text.trim(),
-      'matkul': matkulDipilih!,
-      'deskripsi': deskripsiController.text.trim(),
-      'deadline': '${deadline!.day}/${deadline!.month}/${deadline!.year}',
-      'prioritas': prioritas,
-      'status': 'Belum Selesai',
-    };
+    final task = Task(
+      title: namaController.text.trim(),
+      description: deskripsiController.text.trim(),
+      deadline: '${deadline!.day}/${deadline!.month}/${deadline!.year}',
+    );
 
-    Navigator.pop(context, dataTugas);
+    await DatabaseHelper.instance.insertTask(task);
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Tugas berhasil disimpan!')));
+
+    Navigator.pop(context);
   }
 
   @override
