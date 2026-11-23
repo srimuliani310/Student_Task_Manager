@@ -303,6 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: const BoxDecoration(
           color: Colors.white,
           border: Border(top: BorderSide(color: Colors.black12, width: 0.8)),
+          
         ),
         child: BottomNavigationBar(
           currentIndex: _selectedIndex,
