@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'jadwal.dart';
+import 'profil.dart';
+import 'schedule.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -303,7 +304,6 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: const BoxDecoration(
           color: Colors.white,
           border: Border(top: BorderSide(color: Colors.black12, width: 0.8)),
-          
         ),
         child: BottomNavigationBar(
           currentIndex: _selectedIndex,
@@ -312,6 +312,16 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const JadwalPage()),
+              );
+            } else if (index == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SchedulePage()),
+              );
+            } else if (index == 3) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilPage()),
               );
             } else {
               setState(() {
