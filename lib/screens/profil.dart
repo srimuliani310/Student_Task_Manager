@@ -59,7 +59,6 @@ class _ProfilPageState extends State<ProfilPage> {
 
   // Fungsi menampilkan form edit profil
   void editProfil() {
-    // Mengisi form dengan data saat ini
     namaController.text = nama;
     prodiController.text = programStudi;
     kelasController.text = kelas;
@@ -232,10 +231,23 @@ class _ProfilPageState extends State<ProfilPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
+
+      // AppBar dengan tombol kembali
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
         title: const Text(
           'Profil Saya',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: maroon,
         foregroundColor: Colors.white,
