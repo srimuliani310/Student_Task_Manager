@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import 'tambah_tugas.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -55,9 +55,7 @@ class _SchedulePageState extends State<SchedulePage> {
   Future<void> tambahTugas() async {
     final hasil = await Navigator.push<Map<String, String>>(
       context,
-      MaterialPageRoute(
-        builder: (context) => const TambahTugasPage(),
-      ),
+      MaterialPageRoute(builder: (context) => const TambahTugasPage()),
     );
 
     if (hasil != null) {
@@ -100,12 +98,7 @@ class _SchedulePageState extends State<SchedulePage> {
           title: const Text('Filter Prioritas'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              'Semua',
-              'Rendah',
-              'Sedang',
-              'Tinggi',
-            ].map((prioritas) {
+            children: ['Semua', 'Rendah', 'Sedang', 'Tinggi'].map((prioritas) {
               return RadioListTile<String>(
                 title: Text(prioritas),
                 value: prioritas,
@@ -129,18 +122,19 @@ class _SchedulePageState extends State<SchedulePage> {
   // Filter tugas
   List<Map<String, String>> get tugasTerfilter {
     return daftarTugas.where((tugas) {
-      bool cocokStatus = filterStatus == 'Semua' ||
-          tugas['status'] == filterStatus;
+      bool cocokStatus =
+          filterStatus == 'Semua' || tugas['status'] == filterStatus;
 
-      bool cocokPrioritas = filterPrioritas == 'Semua' ||
-          tugas['prioritas'] == filterPrioritas;
+      bool cocokPrioritas =
+          filterPrioritas == 'Semua' || tugas['prioritas'] == filterPrioritas;
 
-      bool cocokNama = tugas['nama']!
-              .toLowerCase()
-              .contains(searchController.text.toLowerCase()) ||
-          tugas['matkul']!
-              .toLowerCase()
-              .contains(searchController.text.toLowerCase());
+      bool cocokNama =
+          tugas['nama']!.toLowerCase().contains(
+            searchController.text.toLowerCase(),
+          ) ||
+          tugas['matkul']!.toLowerCase().contains(
+            searchController.text.toLowerCase(),
+          );
 
       return cocokStatus && cocokPrioritas && cocokNama;
     }).toList();
@@ -172,16 +166,12 @@ class _SchedulePageState extends State<SchedulePage> {
               )
             : const Text(
                 'Schedule',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
         actions: [
           // Tombol pencarian
           IconButton(
-            icon: Icon(
-              mencari ? Icons.close : Icons.search,
-            ),
+            icon: Icon(mencari ? Icons.close : Icons.search),
             onPressed: () {
               setState(() {
                 mencari = !mencari;
@@ -230,13 +220,9 @@ class _SchedulePageState extends State<SchedulePage> {
                       final tugas = tugasTerfilter[index];
 
                       // Cari index asli pada daftar
-                      final indexAsli =
-                          daftarTugas.indexOf(tugas);
+                      final indexAsli = daftarTugas.indexOf(tugas);
 
-                      return kartuTugas(
-                        tugas,
-                        indexAsli,
-                      );
+                      return kartuTugas(tugas, indexAsli);
                     },
                   ),
           ),
@@ -287,35 +273,23 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   // Widget kartu tugas
-  Widget kartuTugas(
-    Map<String, String> tugas,
-    int indexAsli,
-  ) {
+  Widget kartuTugas(Map<String, String> tugas, int indexAsli) {
     bool selesai = tugas['status'] == 'Selesai';
 
-    Color warnaIcon;
-    IconData iconTugas;
+    String iconPathTugas;
 
     if (selesai) {
-      warnaIcon = Colors.green;
-      iconTugas = Icons.check;
+      iconPathTugas = 'assets/selesai.png';
     } else if (tugas['prioritas'] == 'Tinggi') {
-      warnaIcon = Colors.redAccent;
-      iconTugas = Icons.priority_high;
+      iconPathTugas = 'assets/prioritas.png';
     } else {
-      warnaIcon = Colors.orange;
-      iconTugas = Icons.check;
+      iconPathTugas = 'assets/tugas.png';
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 14,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: pink),
-        ),
+        border: Border(bottom: BorderSide(color: pink)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -326,18 +300,13 @@ class _SchedulePageState extends State<SchedulePage> {
             child: Container(
               width: 36,
               height: 36,
-              decoration: BoxDecoration(
-                color: warnaIcon,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                iconTugas,
-                color: Colors.white,
-                size: 22,
+              decoration: BoxDecoration(shape: BoxShape.circle),
+              child: Padding(
+                padding: const EdgeInsets.all(7),
+                child: Image.asset(iconPathTugas, fit: BoxFit.contain),
               ),
             ),
           ),
-
           const SizedBox(width: 12),
 
           // Informasi tugas
@@ -360,10 +329,7 @@ class _SchedulePageState extends State<SchedulePage> {
 
                   Text(
                     tugas['matkul']!,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
 
                   const SizedBox(height: 4),
@@ -394,10 +360,7 @@ class _SchedulePageState extends State<SchedulePage> {
 
           // Label status
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 5,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: selesai
                   ? const Color(0xFFD5F3E2)
@@ -408,9 +371,7 @@ class _SchedulePageState extends State<SchedulePage> {
               selesai ? 'Selesai' : 'Belum',
               style: TextStyle(
                 fontSize: 11,
-                color: selesai
-                    ? Colors.green
-                    : Colors.redAccent,
+                color: selesai ? Colors.green : Colors.redAccent,
               ),
             ),
           ),
@@ -425,10 +386,7 @@ class _SchedulePageState extends State<SchedulePage> {
               }
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'hapus',
-                child: Text('Hapus tugas'),
-              ),
+              const PopupMenuItem(value: 'hapus', child: Text('Hapus tugas')),
             ],
           ),
         ],

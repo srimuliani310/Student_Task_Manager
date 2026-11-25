@@ -130,7 +130,12 @@ class _JadwalPageState extends State<JadwalPage> {
                   color: pink,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.menu_book, color: maroon, size: 28),
+                child: Image.asset(
+                  'assets/images/book.png',
+                  width: 28,
+                  height: 28,
+                  fit: BoxFit.contain,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -179,7 +184,7 @@ class _JadwalPageState extends State<JadwalPage> {
                   print(hasil);
                 }
               },
-              icon: const Icon(Icons.add_task),
+              icon: const Icon(Icons.add),
               label: const Text('Tambah Tugas'),
               style: OutlinedButton.styleFrom(
                 foregroundColor: maroon,
