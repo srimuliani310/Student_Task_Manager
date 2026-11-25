@@ -123,35 +123,34 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Expanded(
                         child: _buildStatCard(
-                          icon: Icons.calendar_today_outlined,
-                          iconColor: Colors.black87,
+                          iconPath: 'assets/images/jadwal.png',
                           count: '$totalJadwal',
                           label: 'Jadwal',
                         ),
                       ),
                       const SizedBox(width: 10),
+
                       Expanded(
                         child: _buildStatCard(
-                          icon: Icons.assignment_turned_in_outlined,
-                          iconColor: iconPurple,
+                          iconPath: 'assets/images/tugas.png',
                           count: '$totalTugas',
                           label: 'Tugas',
                         ),
                       ),
                       const SizedBox(width: 10),
+
                       Expanded(
                         child: _buildStatCard(
-                          icon: Icons.error_outline_rounded,
-                          iconColor: iconRed,
+                          iconPath: 'assets/images/belum.png',
                           count: '$tugasBelum',
                           label: 'Belum',
                         ),
                       ),
                       const SizedBox(width: 10),
+
                       Expanded(
                         child: _buildStatCard(
-                          icon: Icons.check_circle_rounded,
-                          iconColor: iconGreen,
+                          iconPath: 'assets/images/selesai.png',
                           count: '$tugasSelesai',
                           label: 'Selesai',
                         ),
@@ -438,44 +437,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // Widget pembantu untuk 4 kartu statistik atas
   Widget _buildStatCard({
-    required IconData icon,
-    required Color iconColor,
+    required String iconPath,
     required String count,
     required String label,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Column(
         children: [
-          Icon(icon, color: iconColor, size: 22),
-          const SizedBox(height: 10),
+          Image.asset(iconPath, width: 26, height: 26, fit: BoxFit.contain),
+          const SizedBox(height: 8),
+
           Text(
             count,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-              color: Colors.black87,
-            ),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 4),
+
           Text(
             label,
-            style: const TextStyle(
-              fontSize: 11.5,
-              fontWeight: FontWeight.w500,
-              color: Colors.black54,
-            ),
+            style: const TextStyle(fontSize: 11, color: Colors.black54),
           ),
         ],
       ),
